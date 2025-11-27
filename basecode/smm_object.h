@@ -34,7 +34,7 @@
 
 
 //object generation
-int smmObj_genNode(void);
+int smmObj_getNode(void);
 
 //member retrieving
 

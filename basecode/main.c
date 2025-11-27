@@ -7,7 +7,7 @@
 
 #include <time.h>
 #include <string.h>
-#include "smm_object.h"
+//#include "smm_object.h"
 #include "smm_database.h"
 #include "smm_common.h"
 
@@ -15,19 +15,29 @@
 #define FOODFILEPATH "marbleFoodConfig.txt"
 #define FESTFILEPATH "marbleFestivalConfig.txt"
 
+#define SMMNODE_TYPE_LECTURE						0
+#define SMMNODE_TYPE_RESTAURANT					1
+#define SMMNODE_TYPE_LABORATORY					2
+#define SMMNODE_TYPE_HOME								3
+#define SMMNODE_TYPE_GOTOLAB						4
+#define SMMNODE_TYPE_FOODCHANGE					5
+#define SMMNODE_TYPE_FESTIVAL						6
 
 //board configuration parameters
 static int board_nr;
 static int food_nr;
 static int festival_nr;
 static int player_nr;
+static int player_step;
+
+//구조체로 만들기
+//static SmmPlayer smm_players[MAX_PLAYER];
 
 static int player_pos[MAX_PLAYER];
 static int player_credit[MAX_PLAYER];
-static int player_name[MAX_PLAYER][MAX_CHARNAME];
+static char player_name[MAX_PLAYER][MAX_CHARNAME];
 static int player_energy[MAX_PLAYER];
-
-
+static int flag_graduated[MAX_PLAYER];
 
 
 //function prototypes
@@ -57,9 +67,10 @@ void goForward(int player, int step)
 void printPlayerStatus(void)
 {
 	int i;
+	int n = player_nr;
 	for (i=0;i<n;i++)
 	{
-		printf("%s - position:%i(%s), credit:%i, energy:%i\n"
+		printf("%s - position:%i(%s), credit:%i, energy:%i\n",
 						player_name[i], player_pos[i], smmObj_getName(player_pos[i]), player_credit[i], player_energy[i]);
 		scanf("%s", player_name[i]);
 
@@ -94,24 +105,59 @@ int rolldie(int player)
 
     
     return (rand()%MAX_DIE + 1);
+#endif
 }
 
 
 //action code when a player stays at a node
 void actionNode(int player)
 {
-    switch(type)
-    {
+	int type = smmObj_getNodeType(player_pos);
+  int credit;
+  int energy;
+		
+	switch(type)
+  {
+		case SMMNODE_TYPE_LECTURE:
+		{
+				credit = smmObj_getNodeCredit(player);
+				energy = smmObj_getNodeEnergy(player);
+				player_credit[player] += credit;
+				player_energy[player] -= energy;
+				break;
+		}
+			case SMMNODE_TYPE_RESTAURANT:
+				break;
+				
+			case SMMNODE_TYPE_LABORATORY:
+				break;
+				
+			case SMMNODE_TYPE_HOME:
+				if(player_credit[player] <= GRADUATE_CREDIT)
+				{
+					flag_graduated[player] = 1;
+				}
+				break;
+				
+			case SMMNODE_TYPE_GOTOLAB:
+				break;
+				
+			case SMMNODE_TYPE_FOODCHANGE:
+				break;
+				
+			case SMMNODE_TYPE_FESTIVAL:
+				break;
+
         //case lecture:
         default:
             break;
     }
 }
-#endif
 
 
-int main(int argc, const char * argv[]) {
-    
+
+int main(int argc, const char * argv[]) 
+{
     FILE* fp;
     char name[MAX_CHARNAME];
     int type;
@@ -142,7 +188,7 @@ int main(int argc, const char * argv[]) {
     {
         //store the parameter set
         //printf("%s %i %i %i", name, type, credit, energy);
-        board_nr = smmObj_genNode(name, type, credit, energy)
+        board_nr = smmObj_genNode(name, type, credit, energy);
 
     }
     fclose(fp);
@@ -158,7 +204,7 @@ int main(int argc, const char * argv[]) {
     }
     
     printf("\n\nReading food card component......\n");
-    while () //read a food parameter set
+    //while () //read a food parameter set
     {
         //store the parameter set
     }
@@ -175,7 +221,7 @@ int main(int argc, const char * argv[]) {
     }
     
     printf("\n\nReading festival card component......\n");
-    while () //read a festival card string
+    //while () //read a festival card string
     {
         //store the parameter set
     }
@@ -184,7 +230,7 @@ int main(int argc, const char * argv[]) {
 
     
     
-    2. Player configuration ---------------------------------------------------------------------------------
+    //2. Player configuration ---------------------------------------------------------------------------------
     
     do
     {
@@ -193,12 +239,12 @@ int main(int argc, const char * argv[]) {
         scanf("%i", &player_nr);
         fflush(stdin); // buffer delete
         
-        if (player <= 0 || player_nr > MAX_PLAYER)
+        if (player_nr <= 0 || player_nr > MAX_PLAYER)
 	    		printf("Invalid player number!\n");
     }
-	  while(player <= 0 || player_nr > MAX_PLAYER);
+	  while(player_nr <= 0 || player_nr > MAX_PLAYER);
 	  
-    generatePlayers(player_nr, int smmObj get Energy(0));
+    generatePlayers(player_nr, smmObj_getNodeEnergy(0));
     
 
     //3. SM Marble game starts ---------------------------------------------------------------------------------
@@ -215,7 +261,7 @@ int main(int argc, const char * argv[]) {
         //4-3. go forward
         goForward(turn, die_result);
         pos = pos + rand()%6+1;
-        printf("node: %s, type: %i (%s)\n", smmObj_getName(pos), smmObj_getType(pos),smmObj_getNameType(pos));
+        printf("node: %s, type: %i (%s)\n", smmObj_getNodeName(pos), smmObj_getType(pos),smmObj_getNodeNameType(pos));
 
 		//4-4. take action at the destination node of the board
         //actionNode();
