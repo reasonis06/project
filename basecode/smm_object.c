@@ -9,9 +9,9 @@
 #include "smm_object.h"
 #include <string.h>
 
-#define MAX_NODENR			100
-#define MAX_NODETYPE    7
-#define MAX_GRADE       13
+#define MAX_NODENR											100
+#define MAX_NODETYPE   									7
+#define MAX_GRADE      									13
 
 #define SMMNODE_TYPE_LECTURE						0
 #define SMMNODE_TYPE_RESTAURANT					1
@@ -21,19 +21,19 @@
 #define SMMNODE_TYPE_FOODCHANGE					5
 #define SMMNODE_TYPE_FESTIVAL						6
 
-#define GRADE_A+						0
-#define GRADE_A0						1
-#define GRADE_A-						2
-#define GRADE_B+						3
-#define GRADE_B0						4
-#define GRADE_B-						5
-#define GRADE_C+						6
-#define GRADE_C0						7
-#define GRADE_C-						8
-#define GRADE_D+						9
-#define GRADE_D0						10
-#define GRADE_D-						11
-#define GRADE_F							12
+#define GRADE_A+												0
+#define GRADE_A0												1
+#define GRADE_A-												2
+#define GRADE_B+												3
+#define GRADE_B0												4
+#define GRADE_B-												5
+#define GRADE_C+												6
+#define GRADE_C0												7
+#define GRADE_C-												8
+#define GRADE_D+												9
+#define GRADE_D0												10
+#define GRADE_D-												11
+#define GRADE_F													12
 
 
 
@@ -76,7 +76,7 @@ typedef struct {
 	int smm_grade;
 } smmObj_object_t;
 
-static smmObj_board_t smmObj_board[MAX_NODENR];
+static smmObj_board_t *smmObj_board[MAX_NODENR];
 
 //object generation
 int smmObj_genNode(char* name, int type, int credit, int energy)
