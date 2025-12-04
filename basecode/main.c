@@ -54,12 +54,12 @@ void* findGrade(int player, char *lectureName); //find the grade from the player
 void printGrades(int player); //print all the grade history of the player
 #endif
 
+static 	smm_player_t *smm_players;
 
 void generatePlayers(int n, int initEnergy) //generate a new player
 {
 	int i;
 
-	smm_player_t *smm_players;
 	
 	smm_players = malloc(n*sizeof(smm_player_t));
 	if (smm_players == NULL) {
@@ -97,8 +97,8 @@ void goForward(int player, int step)
 	printf("start from %i(%s) (%i)\n", smm_players[0].player_pos[i], smmObj_getName(smm_players[0].player_pos[i]), player_step);
 	for (i=0;i<step;i++)
 	{
-		smm_players.player_pos[player] = (smm_players.player_pos([player]+1)) % board_nr;
-		printf("	=> moved to %i(%s)\n", player_pos[player], smmObj_getName(player_pos[i]));
+		smm_players[0].player_pos[player] = (smm_players[0].player_pos[player]+1) % board_nr;
+		printf("	=> moved to %i(%s)\n", smm_players[0].player_pos[player], smmObj_getName(smm_players[0].player_pos[i]));
 
 
 	}
@@ -111,8 +111,12 @@ void printPlayerStatus(void)
 	for (i=0;i<n;i++)
 	{
 		printf("%s - position:%i(%s), credit:%i, energy:%i\n",
-						player_name[i], player_pos[i], smmObj_getName(player_pos[i]), player_credit[i], player_energy[i]);
-		scanf("%s", player_name[i]);
+						smm_players[0].player_name[i],
+						smm_players[0].player_pos[i],
+						smmObj_getName(smm_players[0].player_pos[i]),
+						smm_players[0].player_credit[i],
+						smm_players[0].player_energy[i]);
+		scanf("%s", smm_players[0].player_name[i]);
 
 	}
 }
@@ -139,7 +143,7 @@ int rolldie(int player)
 //action code when a player stays at a node
 void actionNode(int player)
 {
-	int type = smmObj_getNodeType(player_pos);
+	int type = smmObj_getNodeType(smm_players[0].player_pos);
   int credit;
   int energy;
 		
@@ -149,8 +153,8 @@ void actionNode(int player)
 		{
 				credit = smmObj_getNodeCredit(player);
 				energy = smmObj_getNodeEnergy(player);
-				player_credit[player] += credit;
-				smm_players.player_energy[player] -= energy;
+				smm_players[0].player_credit[player] += credit;
+				smm_players[0].player_energy[player] -= energy;
 				break;
 		}
 			case SMMNODE_TYPE_RESTAURANT:
@@ -160,9 +164,9 @@ void actionNode(int player)
 				break;
 				
 			case SMMNODE_TYPE_HOME:
-				if(player_credit[player] <= GRADUATE_CREDIT)
+				if(smm_players[0].player_credit[player] <= GRADUATE_CREDIT)
 				{
-					flag_graduated[player] = 1;
+					smm_players[0].flag_graduated[player] = 1;
 				}
 				break;
 				
