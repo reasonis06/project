@@ -38,7 +38,7 @@ typedef struct {
 	int smm_energy;
 } smmObj_board_t;
 
-static smmObj_board_t smmObj_board[MAX_NODER];
+static smmObj_board_t smmObj_board[MAX_NODENR];
 
 //object generation
 int smmObj_genNode(char* name, int type, int credit, int energy)
