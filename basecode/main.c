@@ -31,13 +31,17 @@ static int player_nr;
 static int player_step;
 
 //구조체로 만들기
-//static SmmPlayer smm_players[MAX_PLAYER];
+//struct int smm_players[MAX_PLAYER];
+	
+typedef struct {
+	int player_pos[MAX_PLAYER];
+	int player_credit[MAX_PLAYER];
+	char player_name[MAX_PLAYER][MAX_CHARNAME];
+	int player_energy[MAX_PLAYER];
+	int flag_graduated[MAX_PLAYER];
 
-static int player_pos[MAX_PLAYER];
-static int player_credit[MAX_PLAYER];
-static char player_name[MAX_PLAYER][MAX_CHARNAME];
-static int player_energy[MAX_PLAYER];
-static int flag_graduated[MAX_PLAYER];
+} smm_player_t;
+
 
 
 //function prototypes
@@ -50,14 +54,50 @@ void* findGrade(int player, char *lectureName); //find the grade from the player
 void printGrades(int player); //print all the grade history of the player
 #endif
 
+
+void generatePlayers(int n, int initEnergy) //generate a new player
+{
+	int i;
+
+	smm_player_t *smm_players;
+	
+	smm_players = malloc(n*sizeof(smm_player_t));
+	if (smm_players == NULL) {
+        perror("malloc failed");
+        exit(1);
+    }
+	
+	for (i=0;i<n;i++)
+	{
+		smm_players[0].player_pos[i] = 0;
+		smm_players[0].player_credit[i] = 0;
+		smm_players[0].player_energy[i] = initEnergy;
+		smm_players[0].flag_graduated[i] =0;
+		
+		printf("Input %i-th player name:");
+		scanf("%s", smm_players[0].player_name[i]);
+
+	}
+}
+
+
 void goForward(int player, int step)
 {
 	int i;
+	
+	smm_player_t *smm_players;
+	
+	smm_players = malloc(player*sizeof(smm_player_t));
+	
+	if (smm_players == NULL) {
+        perror("malloc failed");
+        exit(1);
+  }
 	//player_pos[player] = player_pos[player]+step;
-	printf("start from %i(%s) (%i)\n", player_pos[player], smmObj_getName(player_pos[i]), player_step);
+	printf("start from %i(%s) (%i)\n", smm_players[0].player_pos[i], smmObj_getName(smm_players[0].player_pos[i]), player_step);
 	for (i=0;i<step;i++)
 	{
-		player_pos[player] = (player_pos[player]+1) % board_nr;
+		smm_players.player_pos[player] = (smm_players.player_pos([player]+1)) % board_nr;
 		printf("	=> moved to %i(%s)\n", player_pos[player], smmObj_getName(player_pos[i]));
 
 
@@ -77,20 +117,7 @@ void printPlayerStatus(void)
 	}
 }
 
-void generatePlayers(int n, int initEnergy) //generate a new player
-{
-	int i;
-	for (i=0;i<n;i++)
-	{
-		player_pos[i] = 0;
-		player_credit[i] = 0;
-		player_energy[i] = initEnergy;
-		
-		printf("Input %i-th player name:");
-		scanf("%s", player_name[i]);
 
-	}
-}
 
 int rolldie(int player)
 {
@@ -123,7 +150,7 @@ void actionNode(int player)
 				credit = smmObj_getNodeCredit(player);
 				energy = smmObj_getNodeEnergy(player);
 				player_credit[player] += credit;
-				player_energy[player] -= energy;
+				smm_players.player_energy[player] -= energy;
 				break;
 		}
 			case SMMNODE_TYPE_RESTAURANT:
@@ -271,6 +298,8 @@ int main(int argc, const char * argv[])
         turn = (turn + 1) % player_nr;
         
     }
+    
+    free(smm_players);
     
     system("PAUSE");
     return 0;
