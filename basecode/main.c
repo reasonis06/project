@@ -47,11 +47,15 @@ typedef struct {
 
 //function prototypes
 int isGraduated(void); //check if any player is graduated
+
 void printGrades(int player); //print grade history of the player
+
 float calcAverageGrade(int player); //calculate average grade of the player
+
 smmGrade_e takeLecture(int player, char *lectureName, int credit); //take the lecture (insert a grade of the player)
+
 void* findGrade(int player, char *lectureName); //find the grade from the player's grade history
-void printGrades(int player); //print all the grade history of the player
+
 
 static 	smm_player_t smm_players;
 
@@ -89,7 +93,7 @@ void goForward(int player, int step)
   */
   
 	//player_pos[player] = player_pos[player]+step;
-	printf("start from %i(%s) (%i)\n", smm_players.player_pos[i], smmObj_getNodeName(smm_players.player_pos[i]), player_step);
+	printf("start from %i(%s) (%i)\n", smm_players.player_pos[player], smmObj_getNodeName(smm_players.player_pos[player]), player_step);
 	for (i=0;i<step;i++)
 	{
 		smm_players.player_pos[player] = (smm_players.player_pos[player]+1) % board_nr;
@@ -186,9 +190,9 @@ int main(int argc, const char * argv[])
     int type;
     int credit;
     int energy;
-    int cnt;
-    int pos;
-    int turn;
+    int cnt=0;
+    int pos=0;
+    int turn=0;
     
     board_nr = 0;
     food_nr = 0;
@@ -279,12 +283,11 @@ int main(int argc, const char * argv[])
         printPlayerStatus();
         
         //4-2. dice rolling (if not in experiment)
-        
+        dice_result = rolldice(turn);
         
         //4-3. go forward
         goForward(turn, dice_result);
-        pos = pos + rand()%6+1;
-        printf("node: %s, type: %i (%s)\n", smmObj_getNodeName(pos), smmObj_getType(pos),smmObj_getNodeNameType(pos));
+        printf("node: %s, type: %i (%s)\n", smmObj_getNodeName(pos), smmObj_getNodeType(pos),smmObj_getTypeName(pos));
 
 		//4-4. take action at the destination node of the board
         //actionNode();
