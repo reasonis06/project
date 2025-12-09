@@ -21,23 +21,6 @@
 #define SMMNODE_TYPE_FOODCHANGE					5
 #define SMMNODE_TYPE_FESTIVAL						6
 
-#define GRADE_A+												0
-#define GRADE_A0												1
-#define GRADE_A-												2
-#define GRADE_B+												3
-#define GRADE_B0												4
-#define GRADE_B-												5
-#define GRADE_C+												6
-#define GRADE_C0												7
-#define GRADE_C-												8
-#define GRADE_D+												9
-#define GRADE_D0												10
-#define GRADE_D-												11
-#define GRADE_F													12
-
-
-
-
 
 static int smm_nodeNr = 0;
 

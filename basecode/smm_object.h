@@ -30,17 +30,21 @@ typedef struct {
 */
 
 
-/* grade :
-    A+,
-    A0,
-    A-,
-    B+,
-    B0,
-    B-,
-    C+,
-    C0,
-    C-
-*/
+typedef enum {
+	GRADE_A_PLUS = 0,
+	GRADE_A_ZERO ,
+	GRADE_A_MINUS,
+	GRADE_B_PLUS,
+	GRADE_B_ZERO,
+	GRADE_B_MINUS,
+	GRADE_C_PLUS,
+	GRADE_C_ZERO,
+	GRADE_C_MINUS,
+	GRADE_D_PLUS,
+	GRADE_D_ZERO,
+	GRADE_D_MINUS,
+	GRADE_F
+}smmGrade_e;
 
 
 
@@ -55,7 +59,7 @@ int smmObj_getNodeEnergy(int node_nr); // return energy
 
 //element to string
 char* smmObj_getTypeName(int node_type); // return node type name(char*)
-//char* smmObj_getGradeName(smmGrade_e grade);
+char* smmObj_getGradeName(smmGrade_e grade);
 
 
 #endif/* smm_object_h */

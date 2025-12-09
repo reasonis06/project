@@ -46,14 +46,12 @@ typedef struct {
 
 
 //function prototypes
-#if 0
 int isGraduated(void); //check if any player is graduated
 void printGrades(int player); //print grade history of the player
 float calcAverageGrade(int player); //calculate average grade of the player
 smmGrade_e takeLecture(int player, char *lectureName, int credit); //take the lecture (insert a grade of the player)
 void* findGrade(int player, char *lectureName); //find the grade from the player's grade history
 void printGrades(int player); //print all the grade history of the player
-#endif
 
 static 	smm_player_t smm_players;
 
@@ -91,11 +89,11 @@ void goForward(int player, int step)
   */
   
 	//player_pos[player] = player_pos[player]+step;
-	printf("start from %i(%s) (%i)\n", smm_players.player_pos[i], smmObj_getName(smm_players.player_pos[i]), player_step);
+	printf("start from %i(%s) (%i)\n", smm_players.player_pos[i], smmObj_getNodeName(smm_players.player_pos[i]), player_step);
 	for (i=0;i<step;i++)
 	{
 		smm_players.player_pos[player] = (smm_players.player_pos[player]+1) % board_nr;
-		printf("	=> moved to %i(%s)\n", smm_players.player_pos[player], smmObj_getName(smm_players.player_pos[i]));
+		printf("	=> moved to %i(%s)\n", smm_players.player_pos[player], smmObj_getNodeName(smm_players.player_pos[i]));
 
 
 	}
@@ -110,7 +108,7 @@ void printPlayerStatus(void)
 		printf("%s - position:%i(%s), credit:%i, energy:%i\n",
 						smm_players.player_name[i],
 						smm_players.player_pos[i],
-						smmObj_getName(smm_players.player_pos[i]),
+						smmObj_getNodeName(smm_players.player_pos[i]),
 						smm_players.player_credit[i],
 						smm_players.player_energy[i]);
 
