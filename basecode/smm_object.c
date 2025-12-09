@@ -67,14 +67,6 @@ static char smmNodegradeName[MAX_GRADE][MAX_CHARNAME] = { // array size [7][200]
 						"F"
 };
 
-typedef struct {
-	char smm_name[MAX_CHARNAME];// array size [100][200]	int smm_name;
-	int smm_type;
-	int smm_credit;
-	int smm_energy;
-	int smm_grade;
-} smmObj_object_t;
-
 static smmObj_object_t *smmObj_board[MAX_NODENR];
 
 //object generation

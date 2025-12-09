@@ -7,9 +7,10 @@
 
 #include <time.h>
 #include <string.h>
-//#include "smm_object.h"
-#include "smm_database.h"
 #include "smm_common.h"
+#include "smm_database.h"
+#include "smm_object.h"
+
 
 #define BOARDFILEPATH "marbleBoardConfig.txt"
 #define FOODFILEPATH "marbleFoodConfig.txt"
