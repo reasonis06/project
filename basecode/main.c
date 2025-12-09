@@ -54,28 +54,21 @@ void* findGrade(int player, char *lectureName); //find the grade from the player
 void printGrades(int player); //print all the grade history of the player
 #endif
 
-static 	smm_player_t *smm_players;
+static 	smm_player_t smm_players;
 
 void generatePlayers(int n, int initEnergy) //generate a new player
 {
 	int i;
-
-	
-	smm_players = malloc(n*sizeof(smm_player_t));
-	if (smm_players == NULL) {
-        perror("malloc failed");
-        exit(1);
-    }
 	
 	for (i=0;i<n;i++)
 	{
-		smm_players[0].player_pos[i] = 0;
-		smm_players[0].player_credit[i] = 0;
-		smm_players[0].player_energy[i] = initEnergy;
-		smm_players[0].flag_graduated[i] =0;
+		smm_players.player_pos[i] = 0;
+		smm_players.player_credit[i] = 0;
+		smm_players.player_energy[i] = initEnergy;
+		smm_players.flag_graduated[i] =0;
 		
 		printf("Input %i-th player name:");
-		scanf("%s", smm_players[0].player_name[i]);
+		scanf("%s", smm_players.player_name[i]);
 
 	}
 }
@@ -85,6 +78,7 @@ void goForward(int player, int step)
 {
 	int i;
 	
+	/*
 	smm_player_t *smm_players;
 	
 	smm_players = malloc(player*sizeof(smm_player_t));
@@ -93,12 +87,14 @@ void goForward(int player, int step)
         perror("malloc failed");
         exit(1);
   }
+  */
+  
 	//player_pos[player] = player_pos[player]+step;
-	printf("start from %i(%s) (%i)\n", smm_players[0].player_pos[i], smmObj_getName(smm_players[0].player_pos[i]), player_step);
+	printf("start from %i(%s) (%i)\n", smm_players.player_pos[i], smmObj_getName(smm_players.player_pos[i]), player_step);
 	for (i=0;i<step;i++)
 	{
-		smm_players[0].player_pos[player] = (smm_players[0].player_pos[player]+1) % board_nr;
-		printf("	=> moved to %i(%s)\n", smm_players[0].player_pos[player], smmObj_getName(smm_players[0].player_pos[i]));
+		smm_players.player_pos[player] = (smm_players.player_pos[player]+1) % board_nr;
+		printf("	=> moved to %i(%s)\n", smm_players.player_pos[player], smmObj_getName(smm_players.player_pos[i]));
 
 
 	}
@@ -111,22 +107,21 @@ void printPlayerStatus(void)
 	for (i=0;i<n;i++)
 	{
 		printf("%s - position:%i(%s), credit:%i, energy:%i\n",
-						smm_players[0].player_name[i],
-						smm_players[0].player_pos[i],
-						smmObj_getName(smm_players[0].player_pos[i]),
-						smm_players[0].player_credit[i],
-						smm_players[0].player_energy[i]);
-		scanf("%s", smm_players[0].player_name[i]);
+						smm_players.player_name[i],
+						smm_players.player_pos[i],
+						smmObj_getName(smm_players.player_pos[i]),
+						smm_players.player_credit[i],
+						smm_players.player_energy[i]);
 
 	}
 }
 
 
 
-int rolldie(int player)
+int rolldice(int player)
 {
     char c;
-    printf(" Press any key to roll a die (press g to see grade): ");
+    printf(" Press any key to roll a dice (press g to see grade): ");
     c = getchar();
     fflush(stdin);
     
@@ -135,7 +130,7 @@ int rolldie(int player)
         printGrades(player);
 
     
-    return (rand()%MAX_DIE + 1);
+    return (rand()%MAX_DICE + 1);
 #endif
 }
 
@@ -143,7 +138,7 @@ int rolldie(int player)
 //action code when a player stays at a node
 void actionNode(int player)
 {
-	int type = smmObj_getNodeType(smm_players[0].player_pos);
+	int type = smmObj_getNodeType(smm_players.player_pos[player]);
   int credit;
   int energy;
 		
@@ -153,8 +148,8 @@ void actionNode(int player)
 		{
 				credit = smmObj_getNodeCredit(player);
 				energy = smmObj_getNodeEnergy(player);
-				smm_players[0].player_credit[player] += credit;
-				smm_players[0].player_energy[player] -= energy;
+				smm_players.player_credit[player] += credit;
+				smm_players.player_energy[player] -= energy;
 				break;
 		}
 			case SMMNODE_TYPE_RESTAURANT:
@@ -164,9 +159,9 @@ void actionNode(int player)
 				break;
 				
 			case SMMNODE_TYPE_HOME:
-				if(smm_players[0].player_credit[player] <= GRADUATE_CREDIT)
+				if(smm_players.player_credit[player] <= GRADUATE_CREDIT)
 				{
-					smm_players[0].flag_graduated[player] = 1;
+					smm_players.flag_graduated[player] = 1;
 				}
 				break;
 				
@@ -281,16 +276,16 @@ int main(int argc, const char * argv[])
     //3. SM Marble game starts ---------------------------------------------------------------------------------
     while (cnt<5) //is anybody graduated?
     {
-        int die_result;
+        int dice_result;
         
         //4-1. initial printing
         printPlayerStatus();
         
-        //4-2. die rolling (if not in experiment)
+        //4-2. dice rolling (if not in experiment)
         
         
         //4-3. go forward
-        goForward(turn, die_result);
+        goForward(turn, dice_result);
         pos = pos + rand()%6+1;
         printf("node: %s, type: %i (%s)\n", smmObj_getNodeName(pos), smmObj_getType(pos),smmObj_getNodeNameType(pos));
 
@@ -303,7 +298,7 @@ int main(int argc, const char * argv[])
         
     }
     
-    free(smm_players);
+    //free(smm_player);
     
     system("PAUSE");
     return 0;

@@ -68,7 +68,7 @@ static char smmNodegradeName[MAX_GRADE][MAX_CHARNAME] = { // array size [7][200]
 };
 
 typedef struct {
-	char smm_name[MAX_CHARNAME];// array size [100][200]
+	char smm_name[MAX_CHARNAME];// array size [100][200]	int smm_name;
 	int smm_objTpe;
 	int smm_type;
 	int smm_credit;
@@ -81,7 +81,7 @@ static smmObj_board_t *smmObj_board[MAX_NODENR];
 //object generation
 int smmObj_genNode(char* name, int type, int credit, int energy)
 {
-		strcpy(smmObj_board[MAX_NODENR].smm_name,name);
+		strcpy(smmObj_board[MAX_NODENR].smm_name) = name;
     smmObj_board[MAX_NODENR].smm_type = type;
     smmObj_board[MAX_NODENR].smm_credit = credit;
     smmObj_board[MAX_NODENR].smm_energy = energy;
