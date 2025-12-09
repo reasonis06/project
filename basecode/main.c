@@ -31,7 +31,7 @@ static int festival_nr;
 static int player_nr;
 static int player_step;
 
-//구조체로 만들기
+//구조체로 만들기 
 //struct int smm_players[MAX_PLAYER];
 	
 typedef struct {
@@ -70,7 +70,7 @@ void generatePlayers(int n, int initEnergy) //generate a new player
 		smm_players.player_energy[i] = initEnergy;
 		smm_players.flag_graduated[i] =0;
 		
-		printf("Input %i-th player name:");
+		printf("Input %i-th player name:", i);
 		scanf("%s", smm_players.player_name[i]);
 
 	}
@@ -80,17 +80,6 @@ void generatePlayers(int n, int initEnergy) //generate a new player
 void goForward(int player, int step)
 {
 	int i;
-	
-	/*
-	smm_player_t *smm_players;
-	
-	smm_players = malloc(player*sizeof(smm_player_t));
-	
-	if (smm_players == NULL) {
-        perror("malloc failed");
-        exit(1);
-  }
-  */
   
 	//player_pos[player] = player_pos[player]+step;
 	printf("start from %i(%s) (%i)\n", smm_players.player_pos[player], smmObj_getNodeName(smm_players.player_pos[player]), player_step);
@@ -262,7 +251,7 @@ int main(int argc, const char * argv[])
     do
     {
         //input player number to player_nr
-        printf("Input player number");
+        printf("Input player number: ");
         scanf("%i", &player_nr);
         fflush(stdin); // buffer delete
         
@@ -302,4 +291,46 @@ int main(int argc, const char * argv[])
     
     system("PAUSE");
     return 0;
+}
+
+// 1. isGraduated 함수 정의
+int isGraduated(void)
+{
+    // 졸업 조건을 확인하는 로직 구현 (예: 모든 플레이어가 졸업했는지 확인)
+    // 현재는 미구현이므로 임시로 0 반환
+    return 0; 
+}
+
+// 2. printGrades 함수 정의
+void printGrades(int player)
+{
+    // 해당 플레이어의 학점 이력을 출력하는 로직 구현
+    printf("--- Player %d Grade History ---\n", player);
+    // ... 학점 출력 로직 ...
+}
+
+// 3. calcAverageGrade 함수 정의
+float calcAverageGrade(int player)
+{
+    // 평균 학점을 계산하는 로직 구현
+    // 현재는 미구현이므로 임시로 0.0f 반환
+    return 0.0f; 
+}
+
+// 4. takeLecture 함수 정의
+smmGrade_e takeLecture(int player, char *lectureName, int credit)
+{
+    // 학점을 처리하고 등급을 부여하는 로직 구현
+    // smm_players 구조체에 학점 이력 추가, smm_players.player_credit 업데이트 등
+    // ...
+    // 임시로 A+ 반환
+    return GRADE_A_PLUS; 
+}
+
+// 5. findGrade 함수 정의
+void* findGrade(int player, char *lectureName)
+{
+    // 특정 강의의 학점을 찾아 반환하는 로직 구현
+    // 현재는 미구현이므로 임시로 NULL 반환
+    return NULL;
 }
