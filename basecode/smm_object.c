@@ -1,25 +1,19 @@
 //
-//  smm_node.c
+//  smm_object.c
 //  SMMarble
 //
-//  Created by Juyeop Kim on 2023/11/05.
+//  Created by Seongeun Lee on 2025/12/10.
 //
 
 #include "smm_common.h"
 #include "smm_object.h"
 #include <string.h>
+#include <stdlib.h>
 
 #define MAX_NODENR											100
 #define MAX_NODETYPE   									7
 #define MAX_GRADE      									13
 
-#define SMMNODE_TYPE_LECTURE						0
-#define SMMNODE_TYPE_RESTAURANT					1
-#define SMMNODE_TYPE_LABORATORY					2
-#define SMMNODE_TYPE_HOME								3
-#define SMMNODE_TYPE_GOTOLAB						4
-#define SMMNODE_TYPE_FOODCHANGE					5
-#define SMMNODE_TYPE_FESTIVAL						6
 
 //구조체로 만들기 
 //struct int smm_players[MAX_PLAYER];
@@ -66,12 +60,12 @@ static char smmNodegradeName[MAX_GRADE][MAX_CHARNAME] = { // array size [7][200]
 static smmObj_object_t *smmObj_board[MAX_NODENR];
 
 // 1. PlayerNr setting and return
-void smmObj_setPlayerNr(int n) {
-	smm_playerNr = n;
+void smmObj_updatePlayerNr(int n) {
+	smm_PlayerNr = n;
 	}
 	
 int smmObj_getPlayerNr(void) {
-	return smm_playerNr;
+	return smm_PlayerNr;
 	}
 
 // 2. Initialization and update function
@@ -168,9 +162,8 @@ char* smmObj_getTypeName(int node_type)
 	return (smmNodeName[node_type]);
 }
 
-#if 0
 //element to string
-char* smmObj_getNodeName(smmNode_e type);
+char* smmObj_getNodeName(smmNode_e type)
 {
     return smmNodeName[type];
 }
@@ -179,4 +172,3 @@ char* smmObj_getGradeName(smmGrade_e grade)
 {
     return smmGradeName[grade];
 }
-#endif

@@ -2,7 +2,7 @@
 //  main.c
 //  SMMarble
 //
-//  Created by Juyeop Kim on 2023/11/05.
+//  Created by Seongeun Lee on 2025/12/10.
 //
 
 #include <time.h>
@@ -49,7 +49,7 @@ void generatePlayers(int n, int initEnergy) //generate a new player
 {
 	int i;
 	
-	smObj_setPlayerNr(n);
+	smmObj_setPlayerNr(n);
 
 	for (i=0;i<n;i++)
 	{

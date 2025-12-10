@@ -2,7 +2,7 @@
 //  smm_common.h
 //  SMMarble
 //
-//  Created by Juyeop Kim on 2023/11/05.
+//  Created by Seongeun Lee on 2025/12/10.
 //
 
 #ifndef smm_common_h

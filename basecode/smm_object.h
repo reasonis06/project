@@ -2,7 +2,7 @@
 //  smm_object.h
 //  SMMarble object
 //
-//  Created by Juyeop Kim on 2023/11/05.
+//  Created by Seongeun Lee on 2025/12/10.
 //
 
 #ifndef smm_object_h
@@ -19,15 +19,16 @@ typedef struct {
 	int smm_grade;
 } smmObj_object_t;
 
-/* node type :
-    lecture,
-    restaurant,
-    laboratory,
-    home,
-    experiment,
-    foodChance,
-    festival
-*/
+
+typedef enum {
+    SMMNODE_TYPE_LECTURE = 0,
+    SMMNODE_TYPE_RESTAURANT,
+    SMMNODE_TYPE_LABORATORY,
+    SMMNODE_TYPE_HOME,
+    SMMNODE_TYPE_GOTOLAB,
+    SMMNODE_TYPE_FOODCHANGE,
+    SMMNODE_TYPE_FESTIVAL,
+} smmNode_e;
 
 
 typedef enum {
