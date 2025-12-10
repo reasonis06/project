@@ -134,20 +134,44 @@ void actionNode(int player)
 				break;
 		}
 			case SMMNODE_TYPE_RESTAURANT:
+			{
+				int current_energy = smmObj_getPlayerEnergy(player);
+				
 				energy = smmObj_getNodeEnergy(pos);
 				smmObj_updatePlayerEnergy(player, energy);
+				
+				printf(">>> [RESTAURANT: %s] <<<\n", smmObj_getNodeName(pos));
+    		printf(" -> %s gained %i energy. Energy: %i -> %i\n", 
+           smmObj_getPlayerName(player), energy, current_energy, smmObj_getPlayerEnergy(player));
+           
 				break;
 				
 			case SMMNODE_TYPE_LABORATORY:
 				break;
 				
 			case SMMNODE_TYPE_HOME:
-				if(smmObj_getPlayerCredit(player) >= GRADUATE_CREDIT)
-				{
-					smmObj_updateGraduatedFlag(player, 1);
-					printf("Congratulation! %s is graduated!\n", smmObj_getPlayerName(player));
-				}
-				break;
+			{
+   			// Energy Charge
+		    int home_energy = smmObj_getNodeEnergy(pos);
+    		int current_energy = smmObj_getPlayerEnergy(player);
+    
+   			smmObj_updatePlayerEnergy(player, home_energy);
+
+   			printf(">>> [HOME] <<<\n");
+   			printf(" -> %s arrived at Home. Gained %i energy. Energy: %i -> %i\n", 
+           smmObj_getPlayerName(player), home_energy, current_energy, smmObj_getPlayerEnergy(player));
+
+
+	   		// Graduated Check
+    		if(smmObj_getPlayerCredit(player) >= GRADUATE_CREDIT)
+    		{
+        	// Flag
+       	 smmObj_updateGraduatedFlag(player, 1);
+        	printf("Congratulation! %s is graduated and the game will end after this turn!\n", smmObj_getPlayerName(player));
+   		  }
+    		break;
+			}
+
 				
 			case SMMNODE_TYPE_GOTOLAB:
 				break;
