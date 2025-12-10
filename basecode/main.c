@@ -152,7 +152,7 @@ void actionNode(int player)
 				if(smm_players.player_credit[player] >= GRADUATE_CREDIT)
 				{
 					smm_players.flag_graduated[player] = 1;
-					printf("Congratulation! %s is graduated!", smm_players.player_name[player]);
+					printf("Congratulation! %s is graduated!\n", smm_players.player_name[player]);
 				}
 				break;
 				
@@ -279,20 +279,18 @@ int main(int argc, const char * argv[])
         printf("node: %s, type: %i (%s)\n", smmObj_getNodeName(pos), smmObj_getNodeType(pos),smmObj_getTypeName(pos));
 
 		//4-4. take action at the destination node of the board
-        //actionNode();
+        actionNode(turn);
         
         //4-5. next turn
         turn = (turn + 1) % player_nr;
         
     }
-    
-    //free(smm_player);
-    
+        
     system("PAUSE");
     return 0;
 }
 
-// 1. isAnyoneGraduated 함수 정의
+// 1. isAnyoneGraduated function define
 int isAnyoneGraduated(void)
 {
 	int i;
@@ -305,7 +303,7 @@ int isAnyoneGraduated(void)
 	return 0; // nobody graduated
 }
 
-// 2. printGrades 함수 정의
+// 2. printGrades function define
 void printGrades(int player)
 {
     // 해당 플레이어의 학점 이력을 출력하는 로직 구현
