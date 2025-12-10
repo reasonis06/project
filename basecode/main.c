@@ -490,6 +490,7 @@ smmGrade_e takeLecture(int player, char *lectureName, int credit, int energy)
 }
 
 // 5. findGrade 함수 정의 
+
 void* findGrade(int player, char *lectureName)
 {
     // 특정 강의의 학점을 찾아 반환하는 로직 구현

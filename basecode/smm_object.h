@@ -9,8 +9,7 @@
 #define smm_object_h
 
 #define MAX_CHARNAME               			 200
-#define MAX_NODETYPE   									7
-#define MAX_GRADE      									13
+
 
 typedef struct {
 	char smm_name[MAX_CHARNAME];// array size [100][200]
@@ -20,7 +19,7 @@ typedef struct {
 	int smm_grade;
 } smmObj_object_t;
 
-typedef struct smmGradeNode smmGradeNode_t;
+struct smmGradeNode;
 
 typedef enum {
     SMMNODE_TYPE_LECTURE = 0,
@@ -92,6 +91,7 @@ char* smmObj_getGradeName(smmGrade_e grade);
 
 smmGrade_e smmObj_getRandomGrade(void);
 void smmObj_addGradeToHistory(int player, char *lectureName, int credit, smmGrade_e grade);
-smmGradeNode_t* smmObj_findLectureGrade(int player, char *lectureName);
+struct smmGradeNode* smmObj_findLectureGrade(int player, char *lectureName);
+struct smmGradeNode* smmObj_getGradeHistoryHead(int player);
 
 #endif/* smm_object_h */

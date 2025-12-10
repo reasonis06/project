@@ -11,6 +11,8 @@
 #include <stdlib.h>
 
 #define MAX_NODENR											100
+#define MAX_NODETYPE   									7
+#define MAX_GRADE      									13
 #define MAX_ACHIEVABLE_GRADE 						9
 
 
@@ -215,7 +217,7 @@ void smmObj_addGradeToHistory(int player, char *lectureName, int credit, smmGrad
 }
 
 // Search Lecture in History
-smmGradeNode_t* smmObj_findLectureGrade(int player, char *lectureName)
+struct smmGradeNode* smmObj_findLectureGrade(int player, char *lectureName)
 {
     int player_idx = player;
     smmGradeNode_t *current = smm_players.grade_history_head[player_idx];
@@ -230,6 +232,10 @@ smmGradeNode_t* smmObj_findLectureGrade(int player, char *lectureName)
     return NULL; // 찾지 못함
 }
 
+// Get History
+struct smmGradeNode* smmObj_getGradeHistoryHead(int player) {
+    return smm_players.grade_history_head[player];
+}
 
 // EXP STATE Getter/Setter 
 int smmObj_getExpFlag(int player) {
