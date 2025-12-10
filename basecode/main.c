@@ -46,7 +46,7 @@ typedef struct {
 
 
 //function prototypes
-int isGraduated(void); //check if any player is graduated
+int isAnyoneGraduated(void); //check if any player is graduated
 
 void printGrades(int player); //print grade history of the player
 
@@ -149,9 +149,10 @@ void actionNode(int player)
 				break;
 				
 			case SMMNODE_TYPE_HOME:
-				if(smm_players.player_credit[player] <= GRADUATE_CREDIT)
+				if(smm_players.player_credit[player] >= GRADUATE_CREDIT)
 				{
 					smm_players.flag_graduated[player] = 1;
+					printf("Congratulation! %s is graduated!", smm_players.player_name[player]);
 				}
 				break;
 				
@@ -179,7 +180,6 @@ int main(int argc, const char * argv[])
     int type;
     int credit;
     int energy;
-    int cnt=0;
     int pos=0;
     int turn=0;
     
@@ -264,7 +264,7 @@ int main(int argc, const char * argv[])
     
 
     //3. SM Marble game starts ---------------------------------------------------------------------------------
-    while (cnt<5) //is anybody graduated?
+    while (isAnyoneGraduated() == 0) //is anybody graduated?
     {
         int dice_result;
         
@@ -282,7 +282,6 @@ int main(int argc, const char * argv[])
         //actionNode();
         
         //4-5. next turn
-        cnt++;
         turn = (turn + 1) % player_nr;
         
     }
@@ -293,12 +292,17 @@ int main(int argc, const char * argv[])
     return 0;
 }
 
-// 1. isGraduated 함수 정의
-int isGraduated(void)
+// 1. isAnyoneGraduated 함수 정의
+int isAnyoneGraduated(void)
 {
-    // 졸업 조건을 확인하는 로직 구현 (예: 모든 플레이어가 졸업했는지 확인)
-    // 현재는 미구현이므로 임시로 0 반환
-    return 0; 
+	int i;
+	for (i = 0; i < player_nr; i++) {
+		if (smm_players.flag_graduated[i] == 1)
+		{
+			return 1; // anyone graduated
+		}
+	}
+	return 0; // nobody graduated
 }
 
 // 2. printGrades 함수 정의
