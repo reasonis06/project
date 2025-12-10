@@ -59,7 +59,7 @@ int smmObj_getNodeCredit(int node_nr); // return credit
 int smmObj_getNodeEnergy(int node_nr); // return energy
 
 //element to string
-char* smmObj_getTypeName(int node_type); // return node type name(char*)
+char* smmObj_getTypeName(smmNode_e type); // return node type name(char*)
 char* smmObj_getGradeName(smmGrade_e grade);
 
 

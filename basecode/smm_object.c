@@ -41,7 +41,7 @@ static char smmNodeName[MAX_NODETYPE][MAX_CHARNAME] = { // array size [7][200]
 						"festival"
 };
 
-static char smmNodegradeName[MAX_GRADE][MAX_CHARNAME] = { // array size [7][200]
+static char smmGradeName[MAX_GRADE][MAX_CHARNAME] = { // array size [7][200]
 						"A+",
 						"A0",
 						"A-",
@@ -157,13 +157,9 @@ int smmObj_getNodeEnergy(int node_nr)
 	return(smmObj_board[node_nr]->smm_energy);
 }
 
-char* smmObj_getTypeName(int node_type)
-{
-	return (smmNodeName[node_type]);
-}
 
 //element to string
-char* smmObj_getNodeName(smmNode_e type)
+char* smmObj_getTypeName(smmNode_e type)
 {
     return smmNodeName[type];
 }
