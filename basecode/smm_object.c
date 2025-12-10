@@ -13,10 +13,19 @@
 #define MAX_NODENR											100
 #define MAX_NODETYPE   									7
 #define MAX_GRADE      									13
+#define MAX_ACHIEVABLE_GRADE 						9
 
 
 //구조체로 만들기 
 //struct int smm_players[MAX_PLAYER];
+
+// 각 플레이어가 수강한 강의 이력 노드를 나타내는 구조체
+typedef struct smmGradeNode {
+    char lecture_name[MAX_CHARNAME];
+    int credit;
+    smmGrade_e grade;
+    struct smmGradeNode *next;
+} smmGradeNode_t;
 	
 typedef struct {
 	int player_pos[MAX_PLAYER];
@@ -24,7 +33,7 @@ typedef struct {
 	char player_name[MAX_PLAYER][MAX_CHARNAME];
 	int player_energy[MAX_PLAYER];
 	int flag_graduated[MAX_PLAYER];
-
+	smmGradeNode_t *grade_history_head[MAX_PLAYER]; // pointer
 } smm_player_t;
 
 static 	smm_player_t smm_players;
@@ -67,6 +76,15 @@ void smmObj_updatePlayerNr(int n) {
 int smmObj_getPlayerNr(void) {
 	return smm_PlayerNr;
 	}
+
+void smmObj_initPlayerFields(int player, int initEnergy)
+{
+    smm_players.player_pos[player] = 0;
+    smm_players.player_credit[player] = 0;
+    smm_players.player_energy[player] = initEnergy;
+    smm_players.flag_graduated[player] = 0;
+    smm_players.grade_history_head[player] = NULL; 
+}
 
 // 2. Initialization and update function
 void smmObj_updatePlayerPos(int player, int pos) {
@@ -127,7 +145,8 @@ int smmObj_genNode(char* name, int type, int credit, int energy)
   smmObj_board[smm_nodeNr]->smm_credit = credit;
 	smmObj_board[smm_nodeNr]->smm_energy = energy;
 	smmObj_board[smm_nodeNr]->smm_grade = 0; // initialization
-    
+  
+  
   smm_nodeNr++;
     
   return (smm_nodeNr);
@@ -167,4 +186,44 @@ char* smmObj_getTypeName(smmNode_e type)
 char* smmObj_getGradeName(smmGrade_e grade)
 {
     return smmGradeName[grade];
+}
+
+smmGrade_e smmObj_getRandomGrade(void)
+{
+    // 0 ~ 8 number random generate and return
+    int random_val = rand() % MAX_ACHIEVABLE_GRADE;
+    return (smmGrade_e)random_val;
+}
+
+void smmObj_addGradeToHistory(int player, char *lectureName, int credit, smmGrade_e grade)
+{
+    smmGradeNode_t *newNode = (smmGradeNode_t *)malloc(sizeof(smmGradeNode_t));
+    if (newNode == NULL) {
+        return; 
+    }
+    
+    strcpy(newNode->lecture_name, lectureName);
+    newNode->credit = credit;
+    newNode->grade = grade;
+    newNode->next = NULL;
+    
+    int player_idx = player;
+    newNode->next = smm_players.grade_history_head[player_idx];
+    smm_players.grade_history_head[player_idx] = newNode;
+}
+
+// Search Lecture in History
+smmGradeNode_t* smmObj_findLectureGrade(int player, char *lectureName)
+{
+    int player_idx = player;
+    smmGradeNode_t *current = smm_players.grade_history_head[player_idx];
+    
+    while (current != NULL) {
+        if (strcmp(current->lecture_name, lectureName) == 0) {
+            return current; // Find. Pointer Return
+        }
+        current = current->next;
+    }
+    
+    return NULL; // 찾지 못함
 }

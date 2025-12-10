@@ -40,7 +40,7 @@ void printGrades(int player); //print grade history of the player
 
 float calcAverageGrade(int player); //calculate average grade of the player
 
-smmGrade_e takeLecture(int player, char *lectureName, int credit); //take the lecture (insert a grade of the player)
+smmGrade_e takeLecture(int player, char *lectureName, int credit, int energy); //take the lecture (insert a grade of the player)
 
 void* findGrade(int player, char *lectureName); //find the grade from the player's grade history
 
@@ -53,10 +53,7 @@ void generatePlayers(int n, int initEnergy) //generate a new player
 
 	for (i=0;i<n;i++)
 	{
-		smmObj_updatePlayerPos(i, 0);
-		smmObj_updatePlayerCredit(i, 0);
-		smmObj_updatePlayerEnergy(i, initEnergy);
-		smmObj_updateGraduatedFlag(i, 0);
+		smmObj_initPlayerFields(i, initEnergy);
 		
 		printf("Input %i-th player name:", i);
 		char name_buffer[MAX_CHARNAME];
@@ -130,10 +127,10 @@ void actionNode(int player)
   {
 		case SMMNODE_TYPE_LECTURE:
 		{
+				char* lectureName = smmObj_getNodeName(pos);
 				credit = smmObj_getNodeCredit(pos);
 				energy = smmObj_getNodeEnergy(pos);
-				smmObj_updatePlayerCredit(player, credit);
-				smmObj_updatePlayerEnergy(player, -energy);
+				takeLecture(player, lectureName, credit, energy);
 				break;
 		}
 			case SMMNODE_TYPE_RESTAURANT:
@@ -317,14 +314,54 @@ float calcAverageGrade(int player)
     return 0.0f; 
 }
 
-// 4. takeLecture 함수 정의
-smmGrade_e takeLecture(int player, char *lectureName, int credit)
+// 4. takeLecture function define
+smmGrade_e takeLecture(int player, char *lectureName, int credit, int energy)
 {
-    // 학점을 처리하고 등급을 부여하는 로직 구현
-    // smm_players 구조체에 학점 이력 추가, smm_players.player_credit 업데이트 등
-    // ...
-    // 임시로 A+ 반환
-    return GRADE_A_PLUS; 
+	char choice;
+	printf("\n>>> [LECTURE: %s (%i Credit)] <<<\n", lectureName, credit);
+
+	if (smmObj_findLectureGrade(player, lectureName) != NULL)
+    {
+        printf("%s: Warning! You have already taken this lecture. Dropped automatically.\n\n", smmObj_getPlayerName(player));
+        return GRADE_F; // 재수강 불가능하다고 가정하고 F 반환 (또는 드랍)
+    }
+    
+  if (smmObj_getPlayerEnergy(player) < energy)
+    {
+        printf("%s: Not enough energy (%i) to take this lecture (needs %i). Dropped automatically.\n",
+                smmObj_getPlayerName(player), smmObj_getPlayerEnergy(player), energy);
+        return GRADE_F; // 에너지 부족으로 수강 불가능 시 F 반환 (또는 드랍)
+    }
+  
+  	printf("%s: Current Energy is %i. Take lecture (%i energy)? (y/n): ",
+            	smmObj_getPlayerName(player), smmObj_getPlayerEnergy(player), energy);
+    
+    choice = getchar(); 
+    fflush(stdin);
+    
+    if (choice == 'y' || choice == 'Y')
+    {
+        // Random Grade(A+ ~ C-)
+        smmGrade_e final_grade = smmObj_getRandomGrade();
+        char* grade_name = smmObj_getGradeName(final_grade);
+
+        // Data Update
+        smmObj_updatePlayerCredit(player, credit);
+        smmObj_updatePlayerEnergy(player, -energy);
+
+        // Add History
+        smmObj_addGradeToHistory(player, lectureName, credit, final_grade);
+        
+        printf(" -> %s took the lecture and received grade %s! Energy: %i -> %i\n",
+                smmObj_getPlayerName(player), grade_name, smmObj_getPlayerEnergy(player) + energy, smmObj_getPlayerEnergy(player));
+        
+        return final_grade;
+    }
+    else
+    {
+        printf(" -> %s decided to drop the lecture.\n", smmObj_getPlayerName(player));
+        return GRADE_F; // 드랍 시 F(미이수)와 같은 값 반환
+    }
 }
 
 // 5. findGrade 함수 정의

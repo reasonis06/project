@@ -10,6 +10,7 @@
 
 #define MAX_CHARNAME                200
 
+typedef struct smmGradeNode smmGradeNode_t;
 
 typedef struct {
 	char smm_name[MAX_CHARNAME];// array size [100][200]
@@ -52,15 +53,39 @@ typedef enum {
 //object generation
 int smmObj_genNode(char* name, int type, int credit, int energy);
 
+// PlayerNr setting and return
+void smmObj_updatePlayerNr(int n);
+int smmObj_getPlayerNr(void);
+
+// Player Initialization
+void smmObj_initPlayerFields(int player, int initEnergy);
+
 //member retrieving
-char* smmObj_getName(int node_nr); // return node name
+char* smmObj_getNodeName(int node_nr); // return node name
 int smmObj_getNodeType(int node_nr); // return node type
 int smmObj_getNodeCredit(int node_nr); // return credit
 int smmObj_getNodeEnergy(int node_nr); // return energy
+
+// Player Update functions 
+void smmObj_updatePlayerPos(int player, int pos);
+void smmObj_updatePlayerCredit(int player, int credit);
+void smmObj_updatePlayerEnergy(int player, int energy);
+void smmObj_updateGraduatedFlag(int player, int flag);
+char* smmObj_getPlayerName(int player);
+
+// Player Set functions 
+void smmObj_setPlayerName(int player, char* name);
+int smmObj_getPlayerPos(int player);
+int smmObj_getPlayerCredit(int player);
+int smmObj_getPlayerEnergy(int player);
+int smmObj_getGraduatedFlag(int player);
 
 //element to string
 char* smmObj_getTypeName(smmNode_e type); // return node type name(char*)
 char* smmObj_getGradeName(smmGrade_e grade);
 
+smmGrade_e smmObj_getRandomGrade(void);
+void smmObj_addGradeToHistory(int player, char *lectureName, int credit, smmGrade_e grade);
+smmGradeNode_t* smmObj_findLectureGrade(int player, char *lectureName);
 
 #endif/* smm_object_h */
