@@ -133,6 +133,7 @@ void actionNode(int player)
 	int type = smmObj_getNodeType(pos);
   int credit;
   int energy;
+  int target;
 		
 	switch(type)
   {
@@ -224,10 +225,12 @@ void actionNode(int player)
 				
 			case SMMNODE_TYPE_GOTOLAB:
 			{
-				printf("Go to Laboratory!\n");
+				printf("\nGo to Laboratory!\n");
         smmObj_updatePlayerPos(player, 2); // 실험실(2번 노드)로 이동
         smmObj_updateExpFlag(player, 1);   // 실험 상태 ON
-        smmObj_updateExpValue(player, 4);  // 목표값 설정
+        smmObj_updateExpValue(player, target);  // 목표값 설정
+
+				printf(" -> Experiment mode ON! Target dice number: %d\n", target);
 
     		break;
 			}
